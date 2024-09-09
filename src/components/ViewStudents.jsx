@@ -52,8 +52,13 @@ const ViewStudents = () => {
         setSelectedId(-1);
     }
 
-    function handleDelete() {
-
+    function handleDelete(id) {
+        const updatedStudents = students.filter((student, index) => {
+            if (id !== index) {
+                return selectedStudent;
+            }
+        })
+        setStudents(updatedStudents);
     }
 
     return (
