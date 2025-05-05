@@ -3,7 +3,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Form, FormControl } fro
 import { useLocation, useNavigate } from 'react-router-dom';
 import obj from '../services/Service';
 
-const StudentRegistration = () => {
+const StudentRegistrationBE = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,8 +27,12 @@ const StudentRegistration = () => {
 
 
     async function getData() {
-        const response = await obj.viewStudents();
-        setCount(response.data.length);
+        try {
+            const response = await obj.viewStudents();
+            setCount(response.data.length);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async function handleSubmit(event) {
@@ -36,6 +40,7 @@ const StudentRegistration = () => {
         event.preventDefault();
         // setStudents([...students, student]);
         const response = await obj.insertStudent(student);
+        getData();
         if (response.status === 201) {
             alert("Inserted successfully!!");
         }
@@ -54,8 +59,9 @@ const StudentRegistration = () => {
     return (
         <div className='container w-50 mt-5'>
             <Card>
-                <CardHeader>
+                <CardHeader className='d-flex align-items-center justify-content-between'>
                     <h2>Register Here</h2>
+                    <Button onClick={handleView} className='btn btn-info bi bi-table'><sup>{count}</sup></Button>
                 </CardHeader>
                 <Form onSubmit={handleSubmit}>
                     <CardBody>
@@ -77,12 +83,10 @@ const StudentRegistration = () => {
                     </CardFooter>
                 </Form>
             </Card>
-            <h3 className='text-center mt-5'>Total Students : {count}</h3>
             <div className='text-center'>
-                <Button onClick={handleView}>View</Button>
             </div>
         </div>
     )
 }
 
-export default StudentRegistration
+export default StudentRegistrationBE

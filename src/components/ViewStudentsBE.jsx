@@ -3,7 +3,7 @@ import { Button, FormControl, Table } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import obj from '../services/Service';
 
-const ViewStudents = () => {
+const ViewStudentsBE = () => {
 
     const location = useLocation();
     const [students, setStudents] = useState([]);
@@ -22,8 +22,12 @@ const ViewStudents = () => {
 
 
     async function getData() {
-        const response = await obj.viewStudents();
-        setStudents(response.data);
+        try {
+            const response = await obj.viewStudents();
+            setStudents(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     function handleBack() {
@@ -70,7 +74,7 @@ const ViewStudents = () => {
 
     return (
         <div className='container'>
-            <h2><i className="bi bi-skip-backward-circle" onClick={handleBack}></i>View All Students</h2>
+            <h2><i className="bi bi-arrow-left btn btn-warning" onClick={handleBack}></i>View All Students</h2>
             <Table bordered striped hover className='text-center'>
                 <thead>
                     <tr>
@@ -119,17 +123,17 @@ const ViewStudents = () => {
                                 <td>
                                     {
                                         selectedId === student.studentId ?
-                                            <Button onClick={handleSave} variant='success'>Save</Button>
+                                            <Button onClick={handleSave} variant='success' className='bi bi-floppy'></Button>
                                             :
-                                            <Button onClick={() => handleUpdate(student.studentId)}>Update</Button>
+                                            <Button onClick={() => handleUpdate(student.studentId)} className='bi bi-pencil'></Button>
                                     }
                                 </td>
                                 <td>
                                     {
                                         selectedId === student.studentId ?
-                                            <Button onClick={handleCancel} variant='warning'>Cancel</Button>
+                                            <Button onClick={handleCancel} variant='warning' className='bi bi-x-lg'></Button>
                                             :
-                                            <Button onClick={() => handleDelete(student.studentId)} variant='danger'>Delete</Button>
+                                            <Button onClick={() => handleDelete(student.studentId)} variant='danger' className='bi bi-trash'></Button>
                                     }
                                 </td>
                             </tr>
@@ -141,4 +145,4 @@ const ViewStudents = () => {
     )
 }
 
-export default ViewStudents;
+export default ViewStudentsBE;
